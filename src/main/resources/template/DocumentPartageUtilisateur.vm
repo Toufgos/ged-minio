@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 0 10px #ddd;
+        }
+
+        .header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 35px;
+            font-weight: bold;
+            margin: 0;
+            color: #c9302c;
+        }
+
+        .company-info {
+            margin-bottom: 20px;
+        }
+
+        .company-info p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+
+        .invoice-details p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            height: 40px;
+            text-align: left;
+            font-size: 17px;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        .totals {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .totals p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header" style="font-family: Noto Sans JP, sans-serif;">
+        <h1>REÇU</h1>
+    </div>
+    <br/>
+    <hr style="color:#c9302c ;height: 3px"></hr>
+    <br/>
+
+    <table style="width: 100%">
+
+                        <tr>
+                    <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">Document:</span> $document.reference</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">Utilisateur:</span> $utilisateur.name</td>
+                </tr>
+                    <tr>
+                        <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">DateShare:</span> $dateShare</td>
+                    </tr>
+                <tr>
+                    <td style="text-align: left;border-bottom: 0"><span style="font-weight: bold;">AcessShare:</span> $acessShare.libelle</td>
+                </tr>
+
+    </table>
+    <br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/>
+
+    <div class="footer">
+        <p style="font-size: 25px">MERCI POUR VOTRE SERVICE!</p>
+        <p style="font-size: 18px">Si vous avez des questions, veillez contacter nous.</p>
+    </div>
+    <br/><br/>
+    <hr style="color:#c9302c ;height: 3px"></hr>
+</div>
+</body>
+</html>
+

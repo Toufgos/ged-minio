@@ -1,0 +1,28 @@
+version: '3'
+
+volumes:
+  prometheus-data:
+    driver: local
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.43.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./data/prometheus/config:/etc/prometheus/
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+  grafana:
+    image: grafana/grafana-oss:8.5.2
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
