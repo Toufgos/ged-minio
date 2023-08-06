@@ -1,25 +1,10 @@
 package ma.sir.ged.service.impl.admin;
 
-import io.minio.BucketExistsArgs;
-import io.minio.GetBucketVersioningArgs;
-import io.minio.GetObjectArgs;
-import io.minio.GetObjectResponse;
-import io.minio.ListObjectsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.RestoreObjectArgs;
-import io.minio.Result;
-import io.minio.SetBucketVersioningArgs;
-import io.minio.errors.ErrorResponseException;
-import io.minio.errors.InsufficientDataException;
-import io.minio.errors.InternalException;
-import io.minio.errors.InvalidResponseException;
-import io.minio.errors.MinioException;
-import io.minio.errors.ServerException;
-import io.minio.errors.XmlParserException;
+import io.minio.*;
 import io.minio.messages.Item;
 import io.minio.messages.VersioningConfiguration;
+import ma.sir.ged.config.MinioConfig;
+import ma.sir.ged.dto.FichierDTO;
 import ma.sir.ged.service.facade.admin.MinIOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -45,6 +25,9 @@ public class MinIOServiceImpl implements MinIOService {
 
     @Autowired
     private MinioClient minioClient;
+    @Autowired
+    private FichierService fichierService;
+
 
     @Override
     public Boolean bucketExists(String name) {
@@ -56,23 +39,47 @@ public class MinIOServiceImpl implements MinIOService {
         }
     }
 
+
     @Override
-    public int upload(MultipartFile file, String bucket) {
-        if (! bucketExists(bucket))
-            return 0;
+    public FichierDTO upload(MultipartFile file) {
+        return uploadToBucket(file, MinioConfig.getBucketName(), null);
+    }
+
+    @Override
+    public FichierDTO upload(MultipartFile file, String bucket){
+        return uploadToBucket(file, bucket, null);
+    }
+    public FichierDTO upload(MultipartFile file, String bucket, String path){
+        return uploadToBucket(file, bucket, path);
+    }
+
+    @Override
+    public FichierDTO uploadToBucket(MultipartFile file, String bucket, String path) {
+        if (! bucketExists(bucket)){
+            // TODO : need to throw BucketNotFoundException
+            return null;
+        }
+
         try {
-            minioClient.putObject(
+            ObjectWriteResponse response = minioClient.putObject(
                     PutObjectArgs.builder().bucket(bucket)
-                            .object(file.getOriginalFilename())
+                            .object(path+"/"+file.getOriginalFilename())
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .contentType(file.getContentType())
-                            .build()
-            );
-            return 1;
+                            .build());
+            return fichierService.saveFichier(bucket ,response.object(), response.versionId());
         } catch (Exception e) {
+            // TODO : throw SavingObjectError
             e.printStackTrace();
-            return -1;
+            return null;
         }
+    }
+
+    @Override
+    public FichierDTO uploadToBucket(MultipartFile file, String bucket, String superior, String entity) {
+        Calendar now = Calendar.getInstance();
+        String path= superior+"/"+entity+"/"+now.get(Calendar.YEAR)+"/"+now.get(Calendar.MONTH)+"/"+now.get(Calendar.DAY_OF_MONTH);
+        return uploadToBucket(file, bucket, path);
     }
 
     @Override
@@ -244,27 +251,7 @@ public class MinIOServiceImpl implements MinIOService {
 
     }
     public List<String> getAllVersions(String bucketName, String objectPath) {
-        try {
-            // Check if bucket versioning is enabled
-            VersioningConfiguration versioningConfig = minioClient.getBucketVersioning(GetBucketVersioningArgs.builder().bucket(bucketName).build());
-            if (!versioningConfig.status().equals("Enabled")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bucket versioning is not enabled.");
-            }
-            // Get all versions of the object
-            GetObjectResponse object = minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(objectPath).build());
-            List<String> versionIds = Collections.emptyList();
-            //object.
-            if (versionIds.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No versions of the object found.");
-            }
-
-            return versionIds;
-        } catch (MinioException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Minio Error: " + e.getMessage());
-        }
-        catch (Exception e ){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Exception : "+e.getMessage());
-        }
+       return null;
     }
 
 }

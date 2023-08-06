@@ -23,6 +23,10 @@ import java.security.NoSuchAlgorithmException;
 @Configuration
 public class MinioConfig {
 
+
+    @Value("${minio.default.bucket}")
+    private static String bucketName;
+
     @Value("${minio.endpoint}")
     private String endpoint;
 
@@ -31,9 +35,11 @@ public class MinioConfig {
 
     @Value("${minio.secretKey}")
     private String secretKey;
-    @Value("${minio.default.bucket}")
-    private String bucketName;
 
+
+    public static String getBucketName() {
+        return bucketName;
+    }
     private void createBucketIfNotExists(MinioClient minioClient) {
         try {
             boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName.toLowerCase()).build());
