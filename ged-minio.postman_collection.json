@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "62949000-8720-4969-9d42-4373cb1f7e77",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28002821"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "minio",
+			"item": [
+				{
+					"name": "bucket exists by bucket name",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "upload file in a bucket with path",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/toufga/Téléchargements/template.pdf"
+								},
+								{
+									"key": "path",
+									"value": "/hamid/brahim/perso",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8037/minio/upload/file-with-path/ged"
+					},
+					"response": []
+				},
+				{
+					"name": "upload file in a bucket with structure",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/toufga/Téléchargements/1.png"
+								},
+								{
+									"key": "superior",
+									"value": "brahim",
+									"type": "text"
+								},
+								{
+									"key": "entity",
+									"value": "dsi",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8037/minio/upload/file-with-path/geduv"
+					},
+					"response": []
+				},
+				{
+					"name": "upload file in a bucket Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/toufga/leyton/documents de test/enr_lotn°35_bouillet_bar101.pdf"
+								}
+							]
+						},
+						"url": "http://localhost:8037/minio/upload/file/test"
+					},
+					"response": []
+				},
+				{
+					"name": "create a new bucket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "bucketName",
+									"value": "my-new-bucket2",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8037/minio/bucket"
+					},
+					"response": []
+				},
+				{
+					"name": "get the content of a bucket",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8037/minio/findAll/bucket/angelbucket3"
+					},
+					"response": []
+				},
+				{
+					"name": "download all files of a bucket",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8037/minio/downloadAll/bucket/test"
+					},
+					"response": []
+				},
+				{
+					"name": "create a new directory inside a bucket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "bucketName",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "directoryPath",
+									"value": "folder/subfolder/",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8037/minio/bucket/directory"
+					},
+					"response": []
+				},
+				{
+					"name": "download all files in specific path inside the bucket",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "path",
+									"value": "/folder/subfolder/",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8037/minio/downloadAll/test/"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

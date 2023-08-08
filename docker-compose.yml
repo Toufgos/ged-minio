@@ -11,6 +11,7 @@ services:
       MINIO_USERNAME: minio-root
       MINIO_PASSWORD: minio-pass
     volumes:
+      - ./src/main/resources/db/migration/ged-minio-init-schema.sql:/docker-entrypoint-initdb.d/ged-minio-init-schema.sql
       - ./db/mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"

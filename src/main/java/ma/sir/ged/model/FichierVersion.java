@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 public class FichierVersion {
 
     @Id
+    @Column(length = 100)
     private String versionId;
 
     @Column(nullable = false)
